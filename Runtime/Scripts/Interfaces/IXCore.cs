@@ -54,7 +54,7 @@ namespace TinaX
 
         bool TryGetService(Type type, out object service, params object[] userParams);
 
-        
+
 
         /// <summary>
         /// Bind Service. | 绑定服务
@@ -75,7 +75,7 @@ namespace TinaX
 
         IXCore ConfigureServices(Action<IServiceContainer> options);
 
-
+        void BindInstance<TService>(object instance);
 
         void InjectObject(object obj);
 

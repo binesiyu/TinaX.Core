@@ -10,7 +10,7 @@ namespace TinaX.Const
 {
     public interface IServiceContainer
     {
-        
+
 
         #region Get Services
 
@@ -29,10 +29,10 @@ namespace TinaX.Const
         /// <param name="userParams"></param>
         /// <returns></returns>
         object Get(Type type, params object[] userParams);
-        
+
         bool TryGet<TService>(out TService service, params object[] userParams);
         bool TryGet(Type type, out object service, params object[] userParams);
-        
+
         bool TryGetBuildInService<TBuiltInService>(out TBuiltInService service) where TBuiltInService : IBuiltInService;
         bool TryGetBuildInService(Type type, out object service);
 
@@ -55,10 +55,11 @@ namespace TinaX.Const
         IBindData BindBuiltInService<TBuiltInService, TService, TConcrete>() where TBuiltInService : IBuiltInService;
         IBindData BindBuiltInService<TBuiltInService, TConcrete>() where TBuiltInService : IBuiltInService;
 
+        void BindInstance<TService>(object instance);
         #endregion
 
         #region Unbind Services
-        
+
         void Unbind<TService>();
         void Unbind(Type type);
         #endregion
@@ -71,7 +72,7 @@ namespace TinaX.Const
         /// </summary>
         /// <param name="target"></param>
         void Inject(object target);
-        
+
 
         #endregion
     }

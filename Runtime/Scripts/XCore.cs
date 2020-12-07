@@ -16,7 +16,7 @@ namespace TinaX
 {
     public class XCore : IXCore
     {
-        #region instance and create 
+        #region instance and create
 
         private static XCore _MainInstance;
         private static object _lock_obj = new object();
@@ -36,7 +36,7 @@ namespace TinaX
 
         #endregion
 
-        
+
 
         public GameObject BaseGameObject { get; private set; }
 
@@ -65,7 +65,7 @@ namespace TinaX
 
         public IServiceContainer Services => m_ServiceContainer;
 
-        
+
 
         private bool m_Inited = false;
         //private CatLib.Application mCatApp;
@@ -75,11 +75,11 @@ namespace TinaX
         private List<IXBootstrap> m_XBootstrapList = new List<IXBootstrap>();
 
         /// <summary>
-        /// 服务初始化失败的事件注册, string:service name 
+        /// 服务初始化失败的事件注册, string:service name
         /// </summary>
         private Action<string, XException> m_ServicesInitExceptionAction;
         /// <summary>
-        /// 服务启动失败的事件注册, string:service name 
+        /// 服务启动失败的事件注册, string:service name
         /// </summary>
         private Action<string, XException> m_ServicesStartExceptionAction;
 
@@ -126,13 +126,16 @@ namespace TinaX
         {
             m_ServiceContainer.Singleton<TService,TConcrete>();
         }
-        
-        
+
+
+        public void BindInstance<TService>(object instance){
+            m_ServiceContainer.BindInstance<TService>(instance);
+        }
 
         public bool TryGetBuiltinService<TBuiltInInterface>(out TBuiltInInterface service) where TBuiltInInterface: IBuiltInService
             => m_ServiceContainer.TryGetBuildInService(out service);
 
-        public TService GetService<TService>(params object[] userParams) 
+        public TService GetService<TService>(params object[] userParams)
             => m_ServiceContainer.Get<TService>(userParams);
 
         public object GetService(Type type, params object[] userParams)
@@ -202,7 +205,7 @@ namespace TinaX
                 this.DevelopMode = profile.DevelopMode;
             }
 
-            
+
             //对Service进行排序
             int getServiceProviderOrder(ref IXServiceProvider provider)
             {
@@ -225,7 +228,7 @@ namespace TinaX
             foreach(var type in types)
                 m_XBootstrapList.Add((IXBootstrap)Activator.CreateInstance(type));
 
-            
+
 
 
             //Invoke Services "Init"
@@ -267,7 +270,7 @@ namespace TinaX
             //    }
             //}
 
-            
+
 
             //----------------------------------------------------------------------------------------------
 
@@ -289,7 +292,7 @@ namespace TinaX
                 var exception = await p.OnStart(this);
                 if (exception != null)
                 {
-                    
+
                     if (exception == null)
                         m_ServicesInitExceptionAction?.Invoke(p.ServiceName, null);
                     else
@@ -312,12 +315,12 @@ namespace TinaX
             //Invoke XBootstrap "Start"
             foreach (var xbs in m_XBootstrapList)
                 xbs.OnStart(this);
-            
+
 
 
             Debug.Log("[TinaX] App startup finish.");
         }
-    
+
         public void RunAsync(Action<Exception> finishCallback)
         {
             this.RunAsync()
@@ -350,8 +353,8 @@ namespace TinaX
             App.Terminate();
             IsRunning = false;
             await Task.Yield();
-        } 
-    
+        }
+
 
 
         private void OnUnityQuit()

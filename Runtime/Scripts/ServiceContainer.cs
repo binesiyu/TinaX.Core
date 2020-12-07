@@ -33,7 +33,7 @@ namespace TinaX.Container
 
         public bool TryGet<TService>(out TService service, params object[] userParams)
         {
-            if (CatApplication.IsStatic<TService>() 
+            if (CatApplication.IsStatic<TService>()
                 || CatApplication.IsAlias<TService>()
                 || CatApplication.HasBind<TService>()
                 || CatApplication.HasInstance<TService>())
@@ -41,7 +41,7 @@ namespace TinaX.Container
                 service = CatApplication.Make<TService>(userParams);
                 return true;
             }
-            
+
             service = default;
             return false;
         }
@@ -49,7 +49,7 @@ namespace TinaX.Container
         public bool TryGet(Type type, out object service, params object[] userParams)
         {
             string service_name = CatApplication.Type2Service(type);
-            if (CatApplication.IsStatic(service_name) 
+            if (CatApplication.IsStatic(service_name)
                 || CatApplication.IsAlias(service_name)
                 || CatApplication.HasBind(service_name)
                 || CatApplication.HasInstance(service_name))
@@ -153,6 +153,11 @@ namespace TinaX.Container
         public IBindData BindBuiltInService<TBuiltInService, TConcrete>() where TBuiltInService : TinaX.Services.IBuiltInService
             => CatApplication.Singleton<TBuiltInService, TConcrete>();
 
+        public void BindInstance<TService>(object instance)
+        {
+            string service_name = CatApplication.Type2Service(typeof(TService));
+            CatApplication.Instance(service_name,instance);
+        }
 
         #endregion
 
